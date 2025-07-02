@@ -1,41 +1,21 @@
 import { useState } from "react";
 import "./App.css";
 
-// TaskList component to display a list of hardcoded tasks
-const TaskList = () => {
-	const tasks = [
-		{ title: "Business website", category: "Web Design" },
-		{ title: "Social App", category: "Mobile Design" },
-		{ title: "Ecommerce cart", category: "Web Development" },
-	];
-
+// TaskList receives the list tasks and renders them
+const TaskList = ({ tasks }) => {
 	return (
 		<ul className="list-group">
 			{tasks.map((task, index) => (
 				<li key={index} className="list-group-item card-body">
-					<span className="mr-3">Project Name: {task.title}</span>
-					<br />
-					Project Category: {task.category}
+					<span className="mr-3">Task: {task}</span>
 				</li>
 			))}
 		</ul>
 	);
 };
 
-// TaskForm component to handle input and button for adding tasks
-const TaskForm = () => {
-	const [inputValue, setInputValue] = useState("");
-
-	//update input value on change
-	const onChange = (e) => {
-		setInputValue(e.target.value);
-	};
-
-	const logOnClick = () => {
-		//logs input value to the console
-		console.log(inputValue);
-	};
-
+// TaskForm receives input value and handlers via props
+const TaskForm = ({ inputValue, onInputChange, onAddTask }) => {
 	return (
 		<div className="input-group mb-3">
 			<input
@@ -43,22 +23,45 @@ const TaskForm = () => {
 				className="form-control"
 				placeholder="Add Task"
 				value={inputValue}
-				onChange={onChange}
+				onChange={onInputChange}
 			/>
-			<button className="btn btn-outline-secondary" type="button" onClick={logOnClick}>
+			<button className="btn btn-outline-secondary" type="button" onClick={onAddTask}>
 				Add Task
 			</button>
 		</div>
 	);
 };
 
+// Main App component that manages state and renders TaskList and TaskForm
 function App() {
+	const [tasks, setTasks] = useState([
+		"Create Business website",
+		"Research Social App",
+		"Update Ecommerce cart",
+	]);
+	const [inputValue, setInputValue] = useState("");
+
+	const handleInputChange = (e) => {
+		setInputValue(e.target.value);
+	};
+
+	const addTask = () => {
+		if (inputValue.trim() !== "") {
+			setTasks([...tasks, inputValue.trim()]);
+			setInputValue(""); // Clear input after adding
+		}
+	};
+
 	return (
 		<div className="App">
 			<h1>Project Information Application</h1>
-			<TaskList />
+			<TaskList tasks={tasks} />
 			<br />
-			<TaskForm />
+			<TaskForm
+				inputValue={inputValue}
+				onInputChange={handleInputChange}
+				onAddTask={addTask}
+			/>
 		</div>
 	);
 }
