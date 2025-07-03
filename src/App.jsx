@@ -32,7 +32,7 @@ const TaskForm = ({ inputValue, onInputChange, onAddTask }) => {
 	);
 };
 
-// Main App component that manages state and renders TaskList and TaskForm
+// Main App component that manages userState and renders TaskList and TaskForm
 function App() {
 	const [tasks, setTasks] = useState([
 		"Create Business website",
@@ -41,7 +41,7 @@ function App() {
 	]);
 	const [inputValue, setInputValue] = useState("");
 
-	const handleInputChange = (e) => {
+	const userInput = (e) => {
 		setInputValue(e.target.value);
 	};
 
@@ -59,7 +59,7 @@ function App() {
 			<br />
 			<TaskForm
 				inputValue={inputValue}
-				onInputChange={handleInputChange}
+				onInputChange={userInput}
 				onAddTask={addTask}
 			/>
 		</div>
